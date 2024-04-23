@@ -1,3 +1,6 @@
+### Related paper
+[Super Mario A-Star Agent Revisited](https://ieeexplore.ieee.org/document/9643319) [DOI](https://doi.org/10.1109/ICTAI52525.2021.00161)
+
 ### Introduction
 This project is based on the framework created by [Ahmed Khalifa](https://scholar.google.com/citations?user=DRcyg5kAAAAJ&hl=en), which can be found [here](https://github.com/amidos2006/Mario-AI-Framework). As a part of my bachelor thesis, I created a better forward model for this framework, and to prove its functionality, I built a few intelligent agents on top of it.
 
@@ -49,7 +52,7 @@ followed by:
 - java -cp src `your-desired-entry-point`.java
   - e.g. java -cp src src/mff/agents/common/AgentMain.java
 
-this particular example runs the `MFF A* Waypoints` agent on the showcase maze level.
+this particular example runs the file containing various example agent setups, please check the file and uncomment the method that you would like to try.
 
 ### Parameter search
 
