@@ -4,7 +4,7 @@ This project is based on the framework created by [Ahmed Khalifa](https://schola
 The work on this project was continued as a part of my diploma thesis, where I created even better agents, especially the `astarGrid` agent (also referred to as `MFF A* Grid`) and the `astarWaypoints` (`MFF A* Waypoints`) agent.
 
 ### Requirements
-The framework works on Windows (tested on Win 10/11), but should also work on Linux (not tested). I tried to support different working directory settings of various IDEs. It is guaranteed to work with working directory set in the `Mario-AI-Framework` folder, which contains folders such as `src` and `levels`.  Java OpenJDK 17 might be required, but the framework probably runs on earlier versions too.
+I tried to support different working directory settings of various IDEs. It is guaranteed to work with working directory set in the `Mario-AI-Framework` folder, which contains folders such as `src` and `levels`. Java OpenJDK 17 might be required, but the framework probably runs on earlier versions too.
 
 ### Project overview
 
@@ -70,4 +70,4 @@ This framework is not endorsed by Nintendo and is only intended for research pur
 
 ### Contact
 
-In case of any problems, questions, or suggestions, feel free to contact me at <david.sosvald@email.cz>.
+In case of any problems, questions, or suggestions, feel free to contact me at <sosvald@ksvi.mff.cuni.cz>.
