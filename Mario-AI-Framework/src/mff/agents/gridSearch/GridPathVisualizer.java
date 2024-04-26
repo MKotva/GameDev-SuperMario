@@ -6,11 +6,17 @@ import java.util.ArrayList;
 
 public class GridPathVisualizer {
     private static final int NUMBER_NOT_IN_LEVEL_TILE_VALUES = 42000;
+    private static final int WAYPOINT = 42001;
 
     public static void visualizePath(String level, int[][] levelTiles, ArrayList<GridSearchNode> path) {
         int [][] levelTilesWithPath = levelTiles.clone();
+        int waypointCounter = 0;
         for (GridSearchNode node : path) {
-            levelTilesWithPath[node.tileX][node.tileY] = NUMBER_NOT_IN_LEVEL_TILE_VALUES;
+            waypointCounter++;
+            if (waypointCounter % 8 != 0)
+                levelTilesWithPath[node.tileX][node.tileY] = NUMBER_NOT_IN_LEVEL_TILE_VALUES;
+            else
+                levelTilesWithPath[node.tileX][node.tileY] = WAYPOINT;
         }
 
         String l = level.stripTrailing();
@@ -26,6 +32,8 @@ public class GridPathVisualizer {
 
             if (levelTilesWithPath[char_counter % levelTiles.length][char_counter / levelTiles.length] == NUMBER_NOT_IN_LEVEL_TILE_VALUES)
                 sb.append('■');
+            else if (levelTilesWithPath[char_counter % levelTiles.length][char_counter / levelTiles.length] == WAYPOINT)
+                sb.append('●');
             else
                 sb.append(c);
 
