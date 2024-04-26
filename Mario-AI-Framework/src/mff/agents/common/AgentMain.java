@@ -37,9 +37,9 @@ public class AgentMain {
         IMarioAgentMFF astarGridAgent = new mff.agents.astarGrid.Agent();
         AStarTree.NODE_DEPTH_WEIGHT = 1f;
         AStarTree.TIME_TO_FINISH_WEIGHT = 2f;
-        AStarTree.DISTANCE_FROM_PATH_TOLERANCE = 2f;
+        AStarTree.DISTANCE_FROM_PATH_TOLERANCE = 1f;
         AStarTree.DISTANCE_FROM_PATH_ADDITIVE_PENALTY = 5f;
-        AStarTree.DISTANCE_FROM_PATH_MULTIPLICATIVE_PENALTY = 7f;
+        AStarTree.DISTANCE_FROM_PATH_MULTIPLICATIVE_PENALTY = 5f;
         AStarGridHelper.giveLevelTilesWithPath(astarGridAgent, levelPath);
         game.runGame(astarGridAgent, LevelLoader.getLevel(levelPath),
                 200, 0, true);
