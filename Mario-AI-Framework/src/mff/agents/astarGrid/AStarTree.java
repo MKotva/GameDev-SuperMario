@@ -30,10 +30,10 @@ public class AStarTree {
     private int nodesBeforeNewFarthestX = 0;
 
     public static float NODE_DEPTH_WEIGHT = 1f;
-    public static float TIME_TO_FINISH_WEIGHT = 1.1f;
-    public static float DISTANCE_FROM_PATH_TOLERANCE = 5;
-    public static float DISTANCE_FROM_PATH_ADDITIVE_PENALTY = 0;
-    public static float DISTANCE_FROM_PATH_MULTIPLICATIVE_PENALTY = 10;
+    public static float TIME_TO_FINISH_WEIGHT = 2f;
+    public static float DISTANCE_FROM_PATH_TOLERANCE = 1;
+    public static float DISTANCE_FROM_PATH_ADDITIVE_PENALTY = 5;
+    public static float DISTANCE_FROM_PATH_MULTIPLICATIVE_PENALTY = 5;
 
     PriorityQueue<SearchNode> opened = new PriorityQueue<>(new CompareByCost());
     /**
