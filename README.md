@@ -20,8 +20,8 @@ I tried to support different working directory settings of various IDEs. It is g
   - `levelGenerators`
     -  generators from the framework mostly created during competitions
     - the `krys` and `noiseBased` generators were created by MFF UK students Jan Holan and Mikuláš Hrdlička as a part of the Procedural Content Generation course
-  - `mff` - the source code of my theses
-    - `agents` - all the agents created for the theses + a benchmark environment for them; newly only contains the implementation of grid-level search
+  - `mff` - the source code of our works
+    - `agents` - all of the agents + a benchmark environment for them; also contains an implementation of the grid search
     - `forwardmodel` - contains the two new forward models
       - `slim` - which is an improved version of the original forward model
       - `bin` - which is an experimental model that isn't finished
