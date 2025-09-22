@@ -40,6 +40,8 @@ Some of the experiment results (those that could be reasonably uploaded) are pre
 
 - `src/mff/agents/benchmark/AgentBenchmarkMetacentrum.java`, which is used for the parameter search for `MFF A* Grid`, be warned that this class requires command line parameters, please refer to the `Parameter search` section before using this class.
 
+- `src/mff/agents/benchmark/GridSearchBenchmark.java`, which is a simple benchmark of the performance of the grid search.
+
 ### How to run
 
 In the `Mario-AI-Framework` folder, run:
@@ -58,9 +60,9 @@ this particular example runs the file containing various example agent setups, p
 
 As mentioned above, the `src/mff/agents/benchmark/AgentBenchmarkMetacentrum.java` class allows running the parameter search for `MFF A* Grid`, but the usage is not trivial.
 
-Before attempting to run the full search, be warned that it requires almost 1000 days of CPU time and approximately 2 real-time days (if run on MetaCentrum and with enough computational nodes available). It also generates so many output files that opening the folder with them has the potential to crash Windows File Explorer (if I remember correctly, it generated ~200 000 files).
+Before attempting to run the full search, be warned that it requires almost 1000 days of CPU time and approximately 2 real-time days (if run on MetaCentrum and with enough computational nodes available). It also generates so many output files that opening the folder with them has the potential to crash Windows File Explorer.
 
-If you still want to rerun the experiment, run the `Metacentrum-Scripts/metascript-spec-grid.sh` script, uncommenting the `qsub` line, while having the `Metacentrum-Scripts/script-spec-grid.sh` script in the same folder. All of this should be done on the front node of some computational grid that supports the `qsub` command (e.g. MetaCentrum). The rest of the repository also needs to be present at a specific location, check (and update) the scripts if needed for this to match.
+If you want to rerun the experiment, run the `Metacentrum-Scripts/metascript-spec-grid.sh` script (uncomment the `qsub` line after testing it out) while having the `Metacentrum-Scripts/script-spec-grid.sh` script in the same folder. All of this should be done on the front node of some computational grid that supports the `qsub` command (e.g. MetaCentrum). The rest of the repository also needs to be present at a specific location, check (and update) the scripts if needed for this to match.
 
 If you want to run only a part of the experiment locally, just run the `AgentBenchmarkMetacentrum` class as any other and input the command line parameters that you wish to test. Keep in mind that the first four parameters of the agent are input like this, the last one is set in code, so you might need to change that.
 
