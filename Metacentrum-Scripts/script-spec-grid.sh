@@ -1,7 +1,7 @@
 #!/bin/bash
 #PBS -q default@cerit-pbs.cerit-sc.cz
 #PBS -l walltime=20:00:00
-#PBS -l select=1:ncpus=1:mem=4gb:scratch_local=1gb:spec=5.1:cluster=gita:pbs_server=cerit-pbs.cerit-sc.cz:cpu_vendor=amd
+#PBS -l select=1:ncpus=1:mem=4gb:scratch_local=1gb:spec=5.1:cluster=adan
 #PBS -e /auto/vestec1-elixir/home/sosi123/job_logs
 #PBS -o /auto/vestec1-elixir/home/sosi123/job_logs
 
@@ -26,10 +26,7 @@ javac -cp src src/mff/agents/benchmark/AgentBenchmarkMetacentrum.java
 java -cp src mff.agents.benchmark.AgentBenchmarkMetacentrum $NDW $TTFW $DFPT $DFPAP
 
 # move output to data dir
-#cp -a agent-benchmark/. $ROOT || { echo >&2 "Error while copying output file(s) to root!"; exit 2; }
 mkdir -p $RESULTDIR
 cp -a agent-benchmark/. $RESULTDIR/ || { echo >&2 "Error while copying output file(s) to result dir!"; exit 2; }
-#cd agent-benchmark
-#cp astar.csv $DATADIR
 
 clean_scratch
