@@ -9,11 +9,6 @@ DATADIR=/auto/vestec1-elixir/home/sosi123/repo/super-mario-astar
 RESULTDIR=/auto/vestec1-elixir/home/sosi123/results/astarGrid
 ROOT=/auto/vestec1-elixir/home/sosi123
 
-NDW=0.00
-TTFW=0.50
-DFPT=2.00
-DFPAP=3.00
-
 echo "$PBS_JOBID is running on node `hostname -f` in a scratch directory $SCRATCHDIR" >> $DATADIR/jobs_info.txt
 
 module add openjdk-17
