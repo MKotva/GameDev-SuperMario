@@ -11,7 +11,7 @@ do
       for dfpap in 0.00 1.00 2.00 3.00 5.00 10.00 20.00 50.00
       do
           echo $ndw $ttfw $dfpt $dfpap
-          qsub -v NDW=$ndw TTFW=$ttfw DFPT=$dfpt DFPAP=$dfpap script-spec-grid.sh
+          qsub -v NDW=$ndw,TTFW=$ttfw,DFPT=$dfpt,DFPAP=$dfpap script-spec-grid.sh
       done
     done
   done
