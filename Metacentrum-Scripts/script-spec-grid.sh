@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -l walltime=1:00:00
+#PBS -l walltime=10:00:00
 #PBS -l select=1:ncpus=1:mem=4gb:scratch_local=1gb:cluster=elmo1
 #PBS -e /auto/vestec1-elixir/home/sosi123/job_logs
 #PBS -o /auto/vestec1-elixir/home/sosi123/job_logs

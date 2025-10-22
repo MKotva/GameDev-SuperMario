@@ -1,7 +1,6 @@
 #!/bin/bash
-#PBS -q default@cerit-pbs.cerit-sc.cz
-#PBS -l walltime=20:00:00
-#PBS -l select=1:ncpus=1:mem=4gb:scratch_local=1gb:spec=5.1:cluster=adan
+#PBS -l walltime=10:00:00
+#PBS -l select=1:ncpus=1:mem=4gb:scratch_local=1gb:cluster=elmo1
 #PBS -e /auto/vestec1-elixir/home/sosi123/job_logs
 #PBS -o /auto/vestec1-elixir/home/sosi123/job_logs
 
