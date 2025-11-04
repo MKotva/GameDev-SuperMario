@@ -12,8 +12,12 @@ import mff.agents.common.*;
 import mff.forwardmodel.slim.core.MarioForwardModelSlim;
 
 public class AStarTree {
+    
     public SearchNode furthestNode;
     public float furthestNodeDistance;
+
+    public static int SearchStepCount = 3; //Since at every instance, this is default.
+    public static float TimeToFinishWG = 1.1f; // Static replacement of inline value
 
     float marioXStart;
     int searchSteps;
@@ -21,6 +25,7 @@ public class AStarTree {
     static boolean winFound = false;
     static final float maxMarioSpeedX = 10.91f;
     static float exitTileX;
+
 
     public int nodesEvaluated = 0;
     public int mostBacktrackedNodes = 0;
@@ -34,7 +39,7 @@ public class AStarTree {
     HashMap<Integer, Float> visitedStates = new HashMap<>();
     
     public AStarTree(MarioForwardModelSlim startState, int searchSteps) {
-    	this.searchSteps = searchSteps;
+    	this.searchSteps = SearchStepCount;
 
     	marioXStart = startState.getMarioX();
 
@@ -67,7 +72,7 @@ public class AStarTree {
     
     private float calculateCost(MarioForwardModelSlim nextState, int nodeDepth) {
         float timeToFinish = (exitTileX - nextState.getMarioX()) / maxMarioSpeedX;
-        timeToFinish *= 1.1;
+        timeToFinish *= TimeToFinishWG;
         return nodeDepth + timeToFinish;
 	}
     

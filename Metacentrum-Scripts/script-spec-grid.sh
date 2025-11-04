@@ -4,8 +4,8 @@
 #PBS -e /auto/vestec1-elixir/home/sosi123/job_logs
 #PBS -o /auto/vestec1-elixir/home/sosi123/job_logs
 
-DATADIR=/auto/vestec1-elixir/home/sosi123/repo/super-mario-astar
-RESULTDIR=/auto/vestec1-elixir/home/sosi123/results/astarGrid
+DATADIR=/auto/vestec1-elixir/home/mkotva/repo/super-mario-astar
+RESULTDIR=/auto/vestec1-elixir/home/mkotva/results/astar
 ROOT=/auto/vestec1-elixir/home/sosi123
 
 echo "$PBS_JOBID is running on node `hostname -f` in a scratch directory $SCRATCHDIR" >> $DATADIR/jobs_info.txt
@@ -22,7 +22,7 @@ cd $SCRATCHDIR/Mario-AI-Framework
 
 # compile and run Java
 javac -cp src src/mff/agents/benchmark/AgentBenchmarkMetacentrum.java
-java -cp src mff.agents.benchmark.AgentBenchmarkMetacentrum $NDW $TTFW $DFPT $DFPAP
+java -cp src mff.agents.benchmark.AgentBenchmarkMetacentrum $SSC $TTFW
 
 # move output to data dir
 mkdir -p $RESULTDIR
