@@ -69,7 +69,7 @@ public class AgentBenchmarkMetacentrum {
             // }
             try {
                 AStarTree.SearchStepCount = Integer.parseInt(args[0]);
-                AStarTree.TimeToFinishWG = Integer.parseInt(args[1]);
+                AStarTree.TimeToFinishWG = Float.parseFloat(args[1]);
             } catch (Exception e) {
                 System.out.println("Meta parameters not set successfully.");
                 throw e;
