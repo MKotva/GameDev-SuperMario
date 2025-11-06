@@ -70,6 +70,7 @@ public class AgentBenchmarkMetacentrum {
             try {
                 AStarTree.SearchStepCount = Integer.parseInt(args[0]);
                 AStarTree.TimeToFinishWG = Float.parseFloat(args[1]);
+                AStarTree.CoinWeight = Float.parseFloat(args[2]);
             } catch (Exception e) {
                 System.out.println("Meta parameters not set successfully.");
                 throw e;
@@ -80,6 +81,7 @@ public class AgentBenchmarkMetacentrum {
                     File log = prepareLog("agent-benchmark" + File.separator + agentType + "-" + level
                             + "-SCOUNT" + AStarTree.SearchStepCount
                             + "-TTW" + AStarTree.TimeToFinishWG
+                            + "-CW" + AStarTree.CoinWeight
                             // + "-NDW-" + AStarTree.NODE_DEPTH_WEIGHT
                             // + "-TTFW-" + AStarTree.TIME_TO_FINISH_WEIGHT
                             // + "-DFPT-" + AStarTree.DISTANCE_FROM_PATH_TOLERANCE
@@ -93,6 +95,7 @@ public class AgentBenchmarkMetacentrum {
                     FileWriter logWriter = new FileWriter(log);
                     logWriter.write("SCOUNT:" + AStarTree.SearchStepCount + "\n");
                     logWriter.write("TTW:" + AStarTree.TimeToFinishWG + "\n");
+                    logWriter.write("CW:" + AStarTree.CoinWeight + "\n");
                     // logWriter.write("NDW:" + AStarTree.NODE_DEPTH_WEIGHT + "\n");
                     // logWriter.write("TTFW:" + AStarTree.TIME_TO_FINISH_WEIGHT + "\n");
                     // logWriter.write("DFPT:" + AStarTree.DISTANCE_FROM_PATH_TOLERANCE + "\n");

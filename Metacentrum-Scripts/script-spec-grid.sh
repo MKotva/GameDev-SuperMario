@@ -22,7 +22,7 @@ cd $SCRATCHDIR/Mario-AI-Framework
 
 # compile and run Java
 javac -cp src src/mff/agents/benchmark/AgentBenchmarkMetacentrum.java
-java -cp src mff.agents.benchmark.AgentBenchmarkMetacentrum $SSC $TTFW
+java -cp src mff.agents.benchmark.AgentBenchmarkMetacentrum $SSC $TTFW $CW
 
 # move output to data dir
 mkdir -p $RESULTDIR
