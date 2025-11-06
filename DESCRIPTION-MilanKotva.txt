@@ -38,13 +38,24 @@ Postup úpravy byl obdobný jako u společné úlohy, s tím rozdílem, že bylo
 modifikovat samotnou heuristiku. Rozhodl jsem se pro podmíněné přenásobení konstantou, 
 tedy pokud Mario sebral minci, došlo k přenásobení hodnoty.
 
-Hodnoty:
+Spolecne iterovane hodnoty:
+ttfw (Time to finish) in 0.20 0.40 0.60 0.80 1.00 1.20 1.40 1.60 1.80 2.00
+cw (Coin weight) in 0.80 0.85 0.90 0.95 1.00 1.05 1.10 1.15 1.20 1.25
+
+
+Hodnoty pro SCOUNT6 (Step count 6) (coin6.png):
 Jako vstupni hodnoty jsem vzal TimeToFinish a Coin Wight, coz je zminena hodnota,
 pro kterou prenasobime NodeCost pri sebrane minci. Treti hodnota je opet WinRate.
 
 Vysledky:
-Nezda se, ze by coin weight mel pro tuto kombinaci hodnot, nejaky vyrazny vliv na win rate.
+Zda se ze se zvedajicim se Coin weight, win rate lehce roste.
 
+Hodnoty pro SCOUNT3 (Step count 3) (coin3.png):
+Stejne jako predchozi hodnoty, ale tentokrat s SCOUNT 3.
+
+Vysledky:
+Pro SCOUNT 3 se zda ze CW naopak zhorsuje celkove vysledky. Nejlepsi vysledek je pak
+pro CW 1, tedy pro nezmenenou heuristiku.
 
 ########
 Všechny výsledky jsem uložil do adresáře results, kde se nacházejí i grafy a skripty
