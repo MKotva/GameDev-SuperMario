@@ -13,6 +13,18 @@ Při řešení společné úlohy jsem vycházel z poskytnutých skriptů.
      Rozhodl jsem se pro ukládání pomocí statických proměnných, jelikož takto
     to bylo řešeno i v původním návrhu.
 
+Hodnoty:
+Pro spolecnou ulohu jsem pouzil predem dane hodnoty
+
+Vysledky:
+Zda se ze hlavni rozdil se tyka SCOUNT, kdy nejlepsi hodnoty jsou okolo SCOUNT:5.
+S vice rostoucim SCOUNT hodnota zacne prudce klesat.
+
+Pro "time to finish" hodnoty vyssi hodnoty pomahaji lepsim vysledkum.
+
+Graf:
+Spojeni SCOUNT,TTW(TimeToFinish) a WinRate v 3D grafu.
+
 Speciální úloha
 
 Pro speciální úlohu jsem si vybral úpravu heuristiky tak, aby brala v úvahu,
