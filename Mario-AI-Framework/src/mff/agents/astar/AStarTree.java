@@ -18,7 +18,7 @@ public class AStarTree {
 
     public static int SearchStepCount = 3; //Since at every instance, this is default.
     public static float TimeToFinishWG = 1.1f; // Static replacement of inline value
-    public static float CoinWeight = 1f; //Default for nothing.
+    public static float VerticalWG = 1f; //Default for nothing.
 
     float marioXStart;
     int searchSteps;
@@ -45,7 +45,7 @@ public class AStarTree {
     	marioXStart = startState.getMarioX();
 
     	furthestNode = getStartNode(startState);
-    	furthestNode.cost = calculateCost(startState, furthestNode.nodeDepth, -1);
+    	furthestNode.cost = calculateCost(startState, furthestNode.nodeDepth);
     	furthestNodeDistance = furthestNode.state.getMarioX();
 
         farthestReachedX = (int) furthestNode.state.getMarioX();
@@ -71,17 +71,11 @@ public class AStarTree {
     	return new SearchNode(state, parent, cost, action);
     }
     
-    private float calculateCost(MarioForwardModelSlim nextState, int nodeDepth, int previousCoinState) {
+    private float calculateCost(MarioForwardModelSlim nextState, int nodeDepth) {
         float timeToFinish = (exitTileX - nextState.getMarioX()) / maxMarioSpeedX;
         timeToFinish *= TimeToFinishWG;
-        if(previousCoinState == -1)
-            return nodeDepth + timeToFinish;
-        else {
-            var actualCoins = nextState.getWorld().coins;
-            if(actualCoins < previousCoinState)
-                return (nodeDepth + timeToFinish) * CoinWeight;
-            return nodeDepth + timeToFinish;
-        }
+
+        return nodeDepth + timeToFinish + ((nextState.getMarioY()) * VerticalWG);
 	}
     
     public ArrayList<boolean[]> search(MarioTimerSlim timer) {
@@ -108,9 +102,6 @@ public class AStarTree {
                 winFound = true;
                 break;
             }
-
-            //Actual coin state before advance. With that we can determine if the mario ate coin.
-            var actualCoins = current.state.getWorld().coins;
             
             ArrayList<MarioAction> actions = Helper.getPossibleActions(current.state);
             for (MarioAction action : actions) {
@@ -123,7 +114,7 @@ public class AStarTree {
                 if (!newState.getWorld().mario.alive)
                     continue;
 
-                float newStateCost = calculateCost(newState, current.nodeDepth + 1, actualCoins);
+                float newStateCost = calculateCost(newState, current.nodeDepth + 1);
 
                 int newStateCode = getIntState(newState);
                 float newStateOldScore = visitedStates.getOrDefault(newStateCode, -1.0f);
