@@ -2,7 +2,7 @@
 
 # seq -> FIRST INCREMENT LAST
 
-for ssc in 1 2 3 4 5 6 7 8 9 10 20
+for ssc in 3 6 9 10
 do
   for ttfw in 0.20 0.40 0.60 0.80 1.00 1.20 1.40 1.60 1.80 2.00
   do
