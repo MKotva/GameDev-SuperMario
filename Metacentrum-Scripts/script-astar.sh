@@ -5,7 +5,7 @@
 #PBS -o /storage/praha1/home/mkotva/job_logs
 
 DATADIR=/storage/praha1/home/mkotva/repo/GameDev-SuperMario
-RESULTDIR=/storage/praha1/home/mkotva/results/astar
+RESULTDIR=/storage/praha1/home/mkotva/results/third
 ROOT=/storage/praha1/home/mkotva
 
 echo "$PBS_JOBID is running on node `hostname -f` in a scratch directory $SCRATCHDIR" >> $DATADIR/jobs_info.txt
