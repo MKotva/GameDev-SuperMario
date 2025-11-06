@@ -1,0 +1,29 @@
+Společná úloha
+
+Při řešení společné úlohy jsem vycházel z poskytnutých skriptů.
+
+    -Bylo potřeba upravit všechny cesty ve skriptech pro prostředí Metacentra.
+
+    -Dále bylo nutné upravit předávané hodnoty a pojmenování proměnných.
+
+    -Poté bylo potřeba upravit třídu AgentBenchmarkMetacentrum tak, aby správně 
+     parsovala vstupní argumenty, logovala je a prováděla pouze algoritmus A*.
+
+    -Nakonec jsem upravil třídu AStarTree, aby ukládala potřebné argumenty.
+     Rozhodl jsem se pro ukládání pomocí statických proměnných, jelikož takto
+    to bylo řešeno i v původním návrhu.
+
+Speciální úloha
+
+Pro speciální úlohu jsem si vybral úpravu heuristiky tak, aby brala v úvahu,
+zda Mario při svém tahu sebral minci či nikoliv. Zajímalo mě, zda tato změna
+ovlivní celkový výsledek hry, jelikož za jednotlivé mince se získává život.
+
+Postup úpravy byl obdobný jako u společné úlohy, s tím rozdílem, že bylo nutné
+modifikovat samotnou heuristiku. Rozhodl jsem se pro podmíněné přenásobení konstantou, 
+tedy pokud Mario sebral minci, došlo k přenásobení hodnoty.
+
+Všechny výsledky jsem uložil do adresáře results, kde se nacházejí i grafy a skripty
+pro vykreslení výsledků.
+
+Pozor: úlohy jsem rozdělil do několika větví — v master větvi je společná úloha a ve second_task se nachází individuální úloha.
