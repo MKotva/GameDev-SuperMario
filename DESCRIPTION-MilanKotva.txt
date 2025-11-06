@@ -1,4 +1,4 @@
-Společná úloha
+###Společná úloha###
 
 Při řešení společné úlohy jsem vycházel z poskytnutých skriptů.
 
@@ -25,7 +25,10 @@ Pro "time to finish" hodnoty vyssi hodnoty pomahaji lepsim vysledkum.
 Graf:
 Spojeni SCOUNT,TTW(TimeToFinish) a WinRate v 3D grafu.
 
-Speciální úloha
+
+
+
+###Speciální úloha###
 
 Pro speciální úlohu jsem si vybral úpravu heuristiky tak, aby brala v úvahu,
 zda Mario při svém tahu sebral minci či nikoliv. Zajímalo mě, zda tato změna
@@ -35,6 +38,15 @@ Postup úpravy byl obdobný jako u společné úlohy, s tím rozdílem, že bylo
 modifikovat samotnou heuristiku. Rozhodl jsem se pro podmíněné přenásobení konstantou, 
 tedy pokud Mario sebral minci, došlo k přenásobení hodnoty.
 
+Hodnoty:
+Jako vstupni hodnoty jsem vzal TimeToFinish a Coin Wight, coz je zminena hodnota,
+pro kterou prenasobime NodeCost pri sebrane minci. Treti hodnota je opet WinRate.
+
+Vysledky:
+Nezda se, ze by coin weight mel pro tuto kombinaci hodnot, nejaky vyrazny vliv na win rate.
+
+
+########
 Všechny výsledky jsem uložil do adresáře results, kde se nacházejí i grafy a skripty
 pro vykreslení výsledků.
 
