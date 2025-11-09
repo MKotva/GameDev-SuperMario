@@ -4,11 +4,16 @@ import csv
 import glob
 import math
 import os
-from collections import defaultdict
-from statistics import mean
+from collections import defaultdict, Counter
+from statistics import mean, median, pstdev
 
 import matplotlib.pyplot as plt
 import numpy as np
+
+FUNCS = {
+    "mean": lambda xs: mean(xs) if xs else float("nan"),
+    "median": lambda xs: median(xs) if xs else float("nan"),
+}
 
 
 def parseLine(line: str):
@@ -20,129 +25,177 @@ def parseLine(line: str):
         return name, value
 
 
-def parseToBool(token: str):
+def getValue(token):
     if token is None:
         return None
-
     s = str(token).strip().lower()
 
     if s == "true":
-        return True
+        return 1.0
     if s in "false":
-        return False
+        return 0.0
+    
+    try:
+        return float(s)
+    except ValueError:
+        pass
     return None
 
 
-def computWinRate(path: str):
+def getValues(path: str, valueName : str):
     with open(path, "r", newline="", encoding="utf-8") as f:
         lines = f.readlines()[2:]
+
     if not lines:
         return float("nan")
 
-    bools = []
-    for row in csv.DictReader(lines):
-        b = parseToBool(row.get("win/fail"))
-        if b is not None:
-            bools.append(b)
-    return mean(bools) if bools else float("nan")
+    rowHeader = csv.DictReader(lines)
+
+    lower_map = {h.lower(): h for h in rowHeader.fieldnames}
+    key = valueName.lower()
+    if key not in lower_map:
+        raise ValueError(f"Column with given name is not in the file.")
+    col = lower_map[key]
+
+    values = []
+    for row in rowHeader:
+        value = getValue(row.get(col))
+        if value is not None and not math.isnan(value):
+            values.append(value)
+
+    return values
 
 
-def getParams(path: str):
+def getParams(path: str, valueName : str):
     with open(path, "r", encoding="utf-8") as f:
         p1_name, p1_val = parseLine(f.readline())
         p2_name, p2_val = parseLine(f.readline())
 
-    winrate = computWinRate(path)
-    return (p1_name, p1_val, p2_name, p2_val, winrate)
+    values = getValues(path, valueName)
+    if values == []:
+        return p1_name, p1_val, p2_name, p2_val, []
+    return p1_name, p1_val, p2_name, p2_val, values
 
 
-def createMapping(values):
-    nums = []
-    map = {}
-    rev = {}
-    for v in values:
-        if isinstance(v, (int, float)) and not isinstance(v, bool) and not math.isnan(float(v)):
-            nums.append(float(v))
-        else:
-            s = str(v)
-            if s not in map:
-                map[s] = float(len(map))
-                rev[map[s]] = s
-            nums.append(map[s])
-    return np.array(nums, dtype=float), map, rev
-
-
-def getPoints(rootPath):
+def getPoints(rootPath: str, value_col : str):
     paths = []
     for pattern in rootPath:
-        paths.extend(glob.glob(pattern, recursive=True)) ##Big issue with this, I have to learn python properly 
+        paths.extend(glob.glob(pattern, recursive=True)) ##Big issue with this, I have to learn python properly
 
     paths = [p for p in paths if os.path.isfile(p)]
     if not paths:
-        raise SystemExit(f"No files found: {rootPath}") 
+        raise SystemExit("No input files matched.")
 
     points = []
-    p1_name_set, p2_name_set = set(), set()
-    for p in paths:
+    for path in paths:
         try:
-            p1name, p1val, p2name, p2val, winRate = getParams(p)
-            points.append((p1name, p1val, p2name, p2val, winRate, p))
-            p1_name_set.add(p1name)
-            p2_name_set.add(p2name)
+            p1name, p1value, p2name, p2value, values = getParams(path, value_col)
+            if values:
+                points.append((p1name, p1value, p2name, p2value, values))
         except Exception as e:
-            print(f"Skipping {p}: {e}")
+            print(f"Skipping {path}: {e}")
+
+    if not points:
+        raise SystemExit("NO data found!")
     return points
 
 
-def groupByParams(points):
-    from collections import Counter
-    p1Name = Counter([p[0] for p in points]).most_common(1)[0][0]
-    p2Name = Counter([p[2] for p in points]).most_common(1)[0][0]
+def groupByParams(points, agregationFunction):
+    p1Name = Counter([r[0] for r in points]).most_common(1)[0][0]
+    p2Name = Counter([r[2] for r in points]).most_common(1)[0][0]
 
     bucket = defaultdict(list)
-    for _, p1val, _, p2val, wr, _ in points:
-        if math.isnan(wr):
+    p1Values, p2Values = set(), set()
+    for _, p1value, _, p2value, values in points:
+        if not values:
             continue
-        bucket[(p1val, p2val)].append(wr)
+        bucket[(p1value, p2value)].extend(values)
+        p1Values.add(p1value)
+        p2Values.add(p2value)
 
-    P1Vals, P2Vals, W = [], [], []
-    for (p1val, p2val), wrs in bucket.items():
-        P1Vals.append(p1val)
-        P2Vals.append(p2val)
-        W.append(mean(wrs))
+    xValues = sort(list(p1Values))
+    yValues = sort(list(p2Values))
 
-    XR = np.array(P1Vals, dtype=object)
-    YR = np.array(P2Vals, dtype=object)
-    X, map1, _ = createMapping(XR)
-    Y, map2, _ = createMapping(YR)
-    Z = np.array(W, dtype=float)
+    computedValues = np.full((len(yValues), len(xValues)), np.nan)
+    for i, y in enumerate(yValues):
+        for j, x in enumerate(xValues):
+            xs = bucket.get((x, y), [])
+            computedValues[i, j] = FUNCS[agregationFunction](xs) if xs else np.nan
+
+    return p1Name, p2Name, computedValues, xValues, yValues
+
+
+def sort(values):
+    try:
+        _ = [float(v) for v in values]  #Checkign if all values are float
+        return sorted(values, key=lambda x: float(x))
+    except Exception:
+        return sorted([str(v) for v in values], key=lambda s: (s.lower(), s))
     
-    return p1Name, p2Name, X, Y, Z, XR, YR, map1 if map1 else None, map2 if map2 else None
 
 
-def plot(p1_name, p2_name, X, Y, Z, save=None, x_labels=None, y_labels=None):
+def plotHeat(p1Name, p2Name, computedValues, xValues, yValues, zValueName, save):
+    _, axis = plt.subplots(figsize=(8, 6))
+    finite = computedValues[np.isfinite(computedValues)]
+    if finite.size == 0 or np.nanmin(computedValues) == np.nanmax(computedValues):
+        verticalMin, verticlMax = 0.0, 1.0
+    else:
+        verticalMin, verticlMax = float(np.nanmin(computedValues)), float(np.nanmax(computedValues))
+
+    image = axis.imshow(computedValues, origin="lower", aspect="auto", cmap="viridis", vmin=verticalMin, vmax=verticlMax)
+
+    axis.set_xlabel(p1Name)
+    axis.set_ylabel(p2Name)
+    axis.set_xticks(np.arange(len(xValues)))
+    axis.set_xticklabels(xValues, rotation=45, ha="right")
+    axis.set_yticks(np.arange(len(yValues)))
+    axis.set_yticklabels(yValues)
+
+    cbar = plt.colorbar(image, ax=axis)
+    cbar.set_label(f"{zValueName}")
+
+    nodeY, nodeX = computedValues.shape
+    for i in range(nodeY):
+        for j in range(nodeX):
+            value = computedValues[i, j]
+            text = f"{value}"
+            color = "white" if (np.isfinite(value) and value < 0.5) else "black"
+            axis.text(j, i, text, ha="center", va="center", color=color, fontsize=9, clip_on=True)
+
+    axis.set_title(zValueName)
+    plt.tight_layout()
+    if save:
+        plt.savefig(save, dpi=150)
+        print(f"Saved to {save}")
+    plt.show()
+
+
+def plot3D(p1Name, p2Name, computedValues, xValues, yValues, zValueName, save):
+    xIDS, yIDS = np.meshgrid(np.arange(len(xValues)), np.arange(len(yValues)))
+    
+    mask = np.isfinite(computedValues)
+    X = xIDS[mask].ravel()
+    Y = yIDS[mask].ravel()
+    Z = computedValues[mask].ravel()
+
     fig = plt.figure(figsize=(9, 7))
-    ax = fig.add_subplot(111, projection="3d")
-
-    ax.scatter(X, Y, Z, s=40, depthshade=True)
-    if len(X) >= 3:
+    axis = fig.add_subplot(111, projection="3d")
+    
+    axis.scatter(X, Y, Z, s=40, depthshade=True)
+    if X.size >= 3:
         try:
-            ax.plot_trisurf(X, Y, Z, alpha=0.5)
+            axis.plot_trisurf(X, Y, Z, alpha=0.5)
         except Exception as e:
             print("Plotting error")
 
-    ax.set_xlabel(p1_name)
-    ax.set_ylabel(p2_name)
-    ax.set_zlabel("Win rate")
-
-    ax.set_zlim(0.0, 1.0)
-
-    if x_labels:
-        ax.set_xticks(sorted(x_labels.keys()))
-        ax.set_xticklabels([x_labels[k] for k in sorted(x_labels.keys())], rotation=30, ha="right")
-    if y_labels:
-        ax.set_yticks(sorted(y_labels.keys()))
-        ax.set_yticklabels([y_labels[k] for k in sorted(y_labels.keys())], rotation=30, ha="right")
+    axis.set_xlabel(p1Name)
+    axis.set_ylabel(p2Name)
+    axis.set_zlabel(zValueName)
+    axis.set_xticks(np.arange(len(xValues)))
+    axis.set_xticklabels(xValues, rotation=30, ha="right")
+    axis.set_yticks(np.arange(len(yValues)))
+    axis.set_yticklabels(yValues)
+    axis.set_title(zValueName)
 
     fig.tight_layout()
     if save:
@@ -154,20 +207,18 @@ def plot(p1_name, p2_name, X, Y, Z, save=None, x_labels=None, y_labels=None):
 def main():
     ap = argparse.ArgumentParser(description="3D plot of win rate vs two parameters from CSVs.")
     ap.add_argument("inputs", nargs="+")
+    ap.add_argument("--value-col", required=True)
+    ap.add_argument("--aggreg", default="mean", choices=sorted(FUNCS.keys()))
+    ap.add_argument("--plot", choices=["heatmap", "3d"], default="heatmap")
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
 
-    points = getPoints(args.inputs)
-    p1n, p2n, X, Y, Z, _, _, cat1, cat2 = groupByParams(points)
+    p1name, p2name, grid, X, Y = groupByParams(getPoints(args.inputs, args.value_col), args.aggreg)
 
-    x_labels = None
-    y_labels = None
-    if cat1:
-        x_labels = {float(idx): name for name, idx in cat1.items()}
-    if cat2:
-        y_labels = {float(idx): name for name, idx in cat2.items()}
-
-    plot(p1n, p2n, X, Y, Z, save=args.out, x_labels=x_labels, y_labels=y_labels)
+    if args.plot == "heatmap":
+        plotHeat(p1name, p2name, grid, X, Y, args.value_col, args.out)
+    else:
+        plot3D(p1name, p2name, grid, X, Y, args.value_col, args.out)
 
 
 if __name__ == "__main__":

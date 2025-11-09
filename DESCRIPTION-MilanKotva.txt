@@ -2,31 +2,42 @@
 
 Při řešení společné úlohy jsem vycházel z poskytnutých skriptů.
 
-    -Bylo potřeba upravit všechny cesty ve skriptech pro prostředí Metacentra.
+Změny:
 
-    -Dále bylo nutné upravit předávané hodnoty a pojmenování proměnných.
-
-    -Poté bylo potřeba upravit třídu AgentBenchmarkMetacentrum tak, aby správně 
-     parsovala vstupní argumenty, logovala je a prováděla pouze algoritmus A*.
-
-    -Nakonec jsem upravil třídu AStarTree, aby ukládala potřebné argumenty.
-     Rozhodl jsem se pro ukládání pomocí statických proměnných, jelikož takto
-    to bylo řešeno i v původním návrhu.
+- Bylo potřeba upravit všechny cesty ve skriptech pro prostředí Metacentra.
+- Dále bylo nutné upravit předávané hodnoty a pojmenování proměnných.
+- Poté bylo potřeba upravit třídu AgentBenchmarkMetacentrum tak, aby
+  správně parsovala vstupní argumenty, logovala je a prováděla pouze
+  algoritmus A*.
+- Nakonec jsem upravil třídu AStarTree, aby ukládala potřebné argumenty.
+- Rozhodl jsem se pro ukládání pomocí statických proměnných, jelikož takto
+  to bylo řešeno i v původním návrhu.
 
 Hodnoty:
-Pro spolecnou ulohu jsem pouzil predem dane hodnoty
+- Pro společnou úlohu jsem použil předem dané hodnoty.
 
-Vysledky:
-Zda se ze hlavni rozdil se tyka SCOUNT, kdy nejlepsi hodnoty jsou okolo SCOUNT:5.
-S vice rostoucim SCOUNT hodnota zacne prudce klesat.
+Výsledky:
 
-Pro "time to finish" hodnoty vyssi hodnoty pomahaji lepsim vysledkum.
+- Winrate:
+    Zdá se, že hlavní rozdíl se týká parametru SCOUNT, kdy nejlepší výsledky
+    jsou dosaženy přibližně při hodnotě SCOUNT = 5. Při dalším zvyšování této
+    hodnoty začíná winrate prudce klesat. Pro parametr TimeToFinish platí,
+    že vyšší hodnoty vedou k lepším výsledkům.
+
+- Runtime:
+    Pro runtime se zdá, že nejnižší honoty jsou pro SCOUNT okolo 5 a 20. 
+    Pro TTF to vypadá, že záleží na zvoleném SCOUNT, jestli vyšší hodnoty
+    zapřičiní vyšší runtime, nebo naopak.
 
 Graf:
-Spojeni SCOUNT,TTW(TimeToFinish) a WinRate v 3D grafu.
+Pro vizualizaci výsledků jsem vytvořil 3D graf zobrazující závislost mezi
+parametry SCOUNT, TTF (TimeToFinish) a WinRate. Později jsem si však pečlivěji
+přečetl zadání a zjistil jsem, že jsou požadovány Heatmaps, takže jsem upravil
+script a přiložil obě varianty grafu do adresáře results. Script umožňuje 
+interaktivní prohlížení 3D grafu. Použití:
 
-
-
+ -         [Cesta k souborům] --value-col ["název cvs sloupce"] --aggreg [mean/meadian sloupce] --plot [3d/heatmap] --out [nazev out file]
+ -python plot.py astar/*.csv --value-col "run time" --aggreg mean --plot 3d --out 3D-runtime.png
 
 ###Speciální úloha###
 
@@ -35,30 +46,31 @@ zda Mario při svém tahu sebral minci či nikoliv. Zajímalo mě, zda tato změ
 ovlivní celkový výsledek hry, jelikož za jednotlivé mince se získává život.
 
 Postup úpravy byl obdobný jako u společné úlohy, s tím rozdílem, že bylo nutné
-modifikovat samotnou heuristiku. Rozhodl jsem se pro podmíněné přenásobení konstantou, 
-tedy pokud Mario sebral minci, došlo k přenásobení hodnoty.
+modifikovat samotnou heuristiku. Rozhodl jsem se pro podmíněné přenásobení 
+konstantou, pokud Mario sebral minci, hodnota NodeCost se přenásobila zvolenou
+konstantou.
 
-Spolecne iterovane hodnoty:
-ttfw (Time to finish) in 0.20 0.40 0.60 0.80 1.00 1.20 1.40 1.60 1.80 2.00
-cw (Coin weight) in 0.80 0.85 0.90 0.95 1.00 1.05 1.10 1.15 1.20 1.25
+Společně iterované hodnoty:
+- TTF (Time to finish) ∈ {0.20, 0.40, 0.60, 0.80, 1.00, 1.20, 1.40, 1.60, 1.80, 2.00}
+- CW (Coin weight) ∈ {0.80, 0.85, 0.90, 0.95, 1.00, 1.05, 1.10, 1.15, 1.20, 1.25}
+
+Hodnoty pro SCOUNT = 6 (soubor coin6.png):
+- Jako vstupní parametry jsem použil TimeToFinish a CoinWeight, tedy hodnotu,
+  kterou se násobí NodeCost při sebrání mince. Třetím parametrem je opět WinRate.
+
+Výsledky:
+- Zdá se, že se zvyšujícím se CoinWeight roste také WinRate (byť mírně).
+
+Hodnoty pro SCOUNT = 3 (soubor coin3.png):
+- Stejný postup jako u předchozí sady, tentokrát však s SCOUNT = 3.
+
+Výsledky:
+- Pro nižší hodnotu SCOUNT (3) se zdá, že vyšší CoinWeight naopak zhoršuje
+  celkové výsledky. Nejlepší výsledek je dosažen při CW = 1, tedy při
+  nezměněné heuristice.
 
 
-Hodnoty pro SCOUNT6 (Step count 6) (coin6.png):
-Jako vstupni hodnoty jsem vzal TimeToFinish a Coin Wight, coz je zminena hodnota,
-pro kterou prenasobime NodeCost pri sebrane minci. Treti hodnota je opet WinRate.
+Všechny výsledky jsem uložil do adresáře results, kde se nacházejí i grafy a skripty pro jejich vykreslení.
 
-Vysledky:
-Zda se ze se zvedajicim se Coin weight, win rate lehce roste.
 
-Hodnoty pro SCOUNT3 (Step count 3) (coin3.png):
-Stejne jako predchozi hodnoty, ale tentokrat s SCOUNT 3.
-
-Vysledky:
-Pro SCOUNT 3 se zda ze CW naopak zhorsuje celkove vysledky. Nejlepsi vysledek je pak
-pro CW 1, tedy pro nezmenenou heuristiku.
-
-########
-Všechny výsledky jsem uložil do adresáře results, kde se nacházejí i grafy a skripty
-pro vykreslení výsledků.
-
-Pozor: úlohy jsem rozdělil do několika větví — v master větvi je společná úloha a ve second_task se nachází individuální úloha.
+Poznámka: Úlohy jsem rozdělil do několika větví — ve větvi master je společná úloha a ve větvi second_task se nachází individuální úloha.
