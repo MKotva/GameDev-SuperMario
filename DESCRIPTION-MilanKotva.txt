@@ -59,15 +59,15 @@ Hodnoty pro SCOUNT = 6 (soubor coin6.png):
   kterou se násobí NodeCost při sebrání mince. Třetím parametrem je opět WinRate.
 
 Výsledky:
-- Zdá se, že se zvyšujícím se CoinWeight roste také WinRate (byť mírně).
+- Zdá se, že se zvyšujícím se CoinWeight roste také WinRate (byť mírně). Stejně 
+  tak ale winrate. Nejlepší runtime je pro nejmenší coin weight a nejvyšší TTF.
 
 Hodnoty pro SCOUNT = 3 (soubor coin3.png):
 - Stejný postup jako u předchozí sady, tentokrát však s SCOUNT = 3.
 
 Výsledky:
-- Pro nižší hodnotu SCOUNT (3) se zdá, že vyšší CoinWeight naopak zhoršuje
-  celkové výsledky. Nejlepší výsledek je dosažen při CW = 1, tedy při
-  nezměněné heuristice.
+- Pro nižší hodnotu SCOUNT (3) se zdá, že vyšší CoinWeight téměř neovlivňuje
+  celkové výsledky ani runtime.
 
 
 Všechny výsledky jsem uložil do adresáře results, kde se nacházejí i grafy a skripty pro jejich vykreslení.
